@@ -4,6 +4,12 @@ from user import User
 import mysql
 import util
 from datetime import datetime
+import random
+
+NO_ANSWER = ['i cannot understand :(',
+			 'sorry, I have no idea what you said',
+			 'that is beyond me',
+			 "i'm too dump to understand that"]
 
 def get_name(string):
 	'''get the first and last name'''
@@ -43,7 +49,17 @@ def what(question):
 	'''process questions start with 'what'. '''
 
 	if 'what time is it' in question:
-		return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		time = datetime.now()
+		hour, minute = time.hour, time.minute
+		return ["The time is "+time.strftime('%H:%M')+'.',
+				"It's " + str(minute) + " past "+ str(hour) +" right now.",
+				"It's "+time.strftime('%H:%M')+'.' ]
+	else:
+		return NO_ANSWER
+
+
+def randomize_response(response):
+	return random.choice(response)
 
 def process_response(user_response):
 	''' 
@@ -53,11 +69,16 @@ def process_response(user_response):
 	user_response = user_response.lower()
 
 	if user_response == 'exit':
-		AI_response = 'See you!'
+		AI_response = ['See you!', 'Bye!', 'Later!', 'Goodbye!', 'See you soon!']
+		
 	elif user_response.startswith('what'):
 		AI_response = what(user_response)
+		
 	else:
-		AI_response = 'i cannot understand :('
+		AI_response = NO_ANSWER
+
+	# randomize answer to make it more like human
+	AI_response = randomize_response(AI_response)
 
 	return AI_response
 
