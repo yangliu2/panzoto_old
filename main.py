@@ -1,15 +1,16 @@
 #!/usr/bin/python
 
 from user import User
-import mysql
-import util
+# import mysql
+from util import logo
 from datetime import datetime
 import random
+from collections import namedtuple
 
-NO_ANSWER = ['i cannot understand :(',
-			 'sorry, I have no idea what you said',
-			 'that is beyond me',
-			 "i'm too dump to understand that"]
+NO_ANSWER = ['I cannot understand :(',
+			 'Sorry, I have no idea what you said.',
+			 'That is beyond me.',
+			 "I'm too dumb to understand that."]
 
 def get_name(string):
 	'''get the first and last name'''
@@ -26,17 +27,20 @@ def get_name(string):
 		first = ''
 		last = ''
 	else:
-		print 'error in name assigning'
+		print('error in name assigning')
 
-	return first.title(), last.title()
+	# define what's the returned field
+	fullname = namedtuple('FullName', ['FirstName', 'LastName'])
+
+	return fullname(first.title(), last.title())
 
 def menu():
 
 	# get the logo from util.py
-	util.logo()
+	logo()
 
 	# prompt for a name
-	response = raw_input("Please enter your name: ")
+	response = input("Please enter your name: ")
 
 	first, last = get_name(response)
 
@@ -87,13 +91,13 @@ def question_loop(user):
 
 	user_response = ""
 	while user_response != 'exit':
-		user_response = raw_input("Panzoto > ")
-		print process_response(user_response)
+		user_response = input("Panzoto > ")
+		print(process_response(user_response))
 
 def main():
 	'''main function'''
 	user = menu()
-	print "Greatings!", user.firstName, user.lastName
+	print("Greatings!"), user.firstName, user.lastName
 	question_loop(user)
 
 if __name__ == '__main__':
